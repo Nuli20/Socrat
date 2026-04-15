@@ -920,7 +920,6 @@ window.addEventListener('resize', () => {
     window.openModal = function(tab) {
         document.getElementById('auth-modal').classList.add('open');
         switchTab(tab || 'login');
-        document.body.style.overflow = 'hidden';
     };
     window.closeModal = function() {
         document.getElementById('auth-modal').classList.remove('open');
