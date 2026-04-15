@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light" id="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socrat | AI Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>(function(){const t=localStorage.getItem('socrat-theme')||'light';document.getElementById('app').setAttribute('data-theme',t);})()</script>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+    <div class="lesson-dropdown" id="lesson-menu">
+        <button onclick="renameLesson()"><i class="fas fa-edit"></i> Переименовать</button>
+        <button style="color:#FF6B6B" onclick="deleteLesson()"><i class="fas fa-trash-alt"></i> Удалить</button>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <div class="tool-overlay" id="library-overlay">
+        <div class="overlay-header">
+            <h2>Библиотека</h2>
+            <button class="close-overlay" onclick="closeLibraryOverlay()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="overlay-content" id="library-overlay-body">
+            <div style="display:flex; justify-content:flex-end; margin-bottom:20px;">
+                <button class="send-btn" style="border-radius:12px; padding:10px 20px; width:auto;" onclick="showAddLibraryForm()">
+                    <i class="fas fa-plus"></i> Добавить
+                </button>
+            </div>
+            <div id="library-items-list"></div>
+        </div>
+    </div>
+
+    <div class="tool-overlay" id="tool-overlay">
+        <div class="overlay-header">
+            <h2 id="overlay-title">Задание</h2>
+            <button class="close-overlay" onclick="closeTool()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="overlay-content" id="overlay-body"></div>
+    </div>
+
+    <aside class="left-bar">
+        <a href="./main.html" style="text-decoration:none; color:inherit;">
+            <div class="logo"><i class="fas fa-feather-pointed"></i> Socrat</div>
+        </a>
+        <div class="nav-group" id="sessions-list">
+            <div class="nav-item-wrapper">
+                <button class="nav-btn" onclick="newSession()">
+                    <i class="fas fa-plus-circle"></i> Новое занятие
+                </button>
+            </div>
+            <div class="nav-item-wrapper">
+                <button class="nav-btn" id="library-btn" onclick="openLibraryOverlay()">
+                    <i class="fas fa-layer-group"></i> Библиотека
+                </button>
+            </div>
+            <div class="nav-item-wrapper" id="current-session-item" style="display:none;">
+                <button class="nav-btn active">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span class="lesson-title-text" id="current-lesson-name">Новое занятие</span>
+                </button>
+                <button class="more-actions" onclick="toggleLessonMenu(event)"><i class="fas fa-ellipsis-v"></i></button>
+            </div>
+            <div id="past-sessions-list"></div>
+        </div>
+        <div class="sidebar-footer">
+            <div class="user-block">
+                <a href="./main.html" class="user-info">
+                    <div class="avatar-sm" id="user-avatar-letter">?</div>
+                    <span class="user-name" id="sidebar-username">Загрузка...</span>
+                </a>
+                <button class="theme-mini-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-sun" id="theme-icon"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <main class="chat-container">
+        <div class="chat-messages" id="chat-box">
+            <div class="msg ai">
+                <div class="avatar-chat ai-avatar"><i class="fas fa-feather-pointed"></i></div>
+                <div class="msg-bubble">Привет! Я Socrat — твой наставник. Я не буду давать готовых ответов, но помогу тебе найти их самому. Расскажи, с чем хочешь разобраться?</div>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <div class="input-wrapper">
+                <input type="text" id="chat-input" placeholder="Задай вопрос или поделись идеей..." autocomplete="off">
+                <button class="send-btn" id="send-btn" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <aside class="right-bar">
+        <div>
+            <span class="label-cap">Настроение</span>
+            <div class="mood-box">
+                <span class="mood-emoji" data-mood="расстроен" onclick="setMood(this)" title="Расстроен">😢</span>
+                <span class="mood-emoji" data-mood="устал" onclick="setMood(this)" title="Устал">🥱</span>
+                <span class="mood-emoji active" data-mood="neutral" onclick="setMood(this)" title="Нейтрально">😐</span>
+                <span class="mood-emoji" data-mood="воодушевлён" onclick="setMood(this)" title="Воодушевлён">😊</span>
+                <span class="mood-emoji" data-mood="горю желанием" onclick="setMood(this)" title="Горю желанием">🔥</span>
+            </div>
+        </div>
+        <div>
+            <span class="label-cap">Инструменты</span>
+            <div class="tool-grid">
+                <div class="tool-card" onclick="openTool('test')"><i class="fas fa-tasks"></i><span>Тест</span></div>
+                <div class="tool-card" onclick="openTool('cards')"><i class="fas fa-clone"></i><span>Карточки</span></div>
+                <div class="tool-card" onclick="openTool('questions')"><i class="fas fa-pen-nib"></i><span>Вопросы</span></div>
+                <div class="tool-card" onclick="openTool('gaps')"><i class="fas fa-font"></i><span>Пропуски</span></div>
+            </div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column;">
+            <span class="label-cap">Заметки</span>
+            <div class="notes-area" style="flex:1;">
+                <textarea id="notes-textarea" placeholder="Важные мысли..."></textarea>
+            </div>
+        </div>
+    </aside>
+
+    <script src="./scripts.js"></script>
+</body>
+</html>
