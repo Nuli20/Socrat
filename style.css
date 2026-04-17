@@ -1,4 +1,3 @@
-/* ===== landing.css ===== */
 html.page-index {
 
     --emerald: #50C878;
@@ -559,7 +558,6 @@ html.page-index[data-lang="kz"] [data-lang-kz].d-flex {
  display:flex !important; }
 
 
-/* ===== main.css ===== */
 html.page-dashboard {
 
     --primary: #50C878;
@@ -1474,7 +1472,6 @@ html.page-dashboard .typing-effect {
     h1 { font-size: 2rem; }
 }
 
-/* ===== dashboard.css ===== */
 html.page-main {
 
     --primary: #50C878;
@@ -1736,5 +1733,3 @@ html.page-main .toast {
 
 html.page-main .toast.show {
  transform: translateX(-50%) translateY(0); }
-
-
